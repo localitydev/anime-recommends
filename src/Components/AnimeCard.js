@@ -5,30 +5,35 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
+
+// MATERIAL ICONS
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import AddToQueueOutlinedIcon from '@material-ui/icons/AddToQueueOutlined';
+
+import { TextareaAutosize } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+    }
   },
   details: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 3,
+    flexBasis: '70%'
   },
   content: {
-    flex: '1 0 auto',
   },
   cover: {
-    width: 151,
+    flexBasis: '30%'
+  },
+  coverImg: {
+    width: 'auto',
+    maxWidth: '100%'
   },
   controls: {
-    display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    padding: theme.spacing(0,2,2),
   },
   playIcon: {
     height: 38,
@@ -42,12 +47,14 @@ export default function AnimeCard(props) {
 
   return (
     <Card className={classes.root}>
-      <CardMedia
-        component="img"
-        className={classes.cover}
-        image={props.anime.image_url}
-        title=""
-      />
+      <div className={classes.cover}>
+        <CardMedia
+          className={classes.coverImg}
+          component="img"
+          image={props.anime.image_url}
+          title=""
+        />
+      </div>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
@@ -56,17 +63,21 @@ export default function AnimeCard(props) {
           <Typography variant="subtitle1" color="textSecondary">
             Episodes: {props.anime.episodes}
           </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Type: {props.anime.type}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Score: {props.anime.score}
+          </Typography>
+          <hr/>
           <Typography component="p">{props.anime.synopsis}</Typography>
+          <Typography component="p"><a href={props.anime.url} target="_blank">Learn more</a></Typography>
+          <hr />
         </CardContent>
+        
         <div className={classes.controls}>
           <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classes.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+            <AddToQueueOutlinedIcon />
           </IconButton>
         </div>
       </div>

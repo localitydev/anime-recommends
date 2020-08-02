@@ -58,9 +58,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1.4, 1, 0, 1),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -73,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     padding: theme.spacing(1, 2),
     color: "#fff",
-    backgroundColor: "#BADA55"
+    backgroundColor: "#BADA55",
+    float: "right",
   }
 }));
 
@@ -92,16 +92,17 @@ export default function Header(props) {
 
     console.log("Header Proptypes", props);
 
+    // Query GET Jikan API for anime search
     axios.get("https://api.jikan.moe/v3/search/anime?q="+searchText)
       .then(function (response){
         console.log("Response from API:", response);
-        props.animeList(response.data.results);
+        props.animeList(response.data.results);       // [setAnime] to the Data Results from Jikan API
       })
       .catch(function (error){
-        console.log("An error has occured.", error);
+        console.log("An error has occured.", error);  // IF there is an ERROR, tell me about it.
       })
       .finally(function(){
-        console.log("Getting Anime search completed.");
+        console.log("Getting Anime search completed."); // If there is anything I need to do once the AJAX call is completed
       });
   }
 
@@ -116,22 +117,12 @@ export default function Header(props) {
   return (
     <AppBar className={classes.header} position="static">
       <Toolbar>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
           VeenaViera - Recommend Animes
         </Typography>
         <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
           <InputBase
-            placeholder="Search…"
+            placeholder="Search animes..."
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -140,7 +131,7 @@ export default function Header(props) {
             onChange={(e) => onInputText(e)}
             onKeyDown={(e) => e.keyCode == 13 && e.target.value.length > 2 ? onSearch() : null }
           />
-          <Button variant="contained" className={classes.submit} onClick={(e) => {onSearch()}}>search</Button>
+          <Button variant="contained" className={classes.submit} onClick={(e) => {onSearch()}}>GO</Button>
         </div>
       </Toolbar>
     </AppBar>

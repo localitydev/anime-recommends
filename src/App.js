@@ -34,7 +34,7 @@ export default function App() {
                 <Grid container spacing={3}>
                     {animes.map( (anime, key) =>{
                         return(
-                            <Grid item xs={12} md={6} lg={4}>
+                            <Grid item xs={12} md={6}>
                                 <AnimeCard anime={anime} />
                             </Grid>
                         )
