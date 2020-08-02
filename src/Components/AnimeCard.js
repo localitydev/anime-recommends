@@ -40,25 +40,23 @@ export default function AnimeCard(props) {
   const classes = useStyles();
   const theme = useTheme();
 
-  console.log(props.url);
-
   return (
     <Card className={classes.root}>
       <CardMedia
         component="img"
         className={classes.cover}
-        image={props.url}
-        title="Live from space album cover"
+        image={props.anime.image_url}
+        title=""
       />
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            Naruto
+            {props.anime.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            Episodes: 400
+            Episodes: {props.anime.episodes}
           </Typography>
-          <Typography component="p">Moments prior to Naruto Uzumaki's birth, a huge demon known as the Kyuubi, the Nine-Tailed Fox, attacked Konohagakure, the Hidden Leaf Village, and wreaked havoc. In order to put an end to the Kyuubi'...</Typography>
+          <Typography component="p">{props.anime.synopsis}</Typography>
         </CardContent>
         <div className={classes.controls}>
           <IconButton aria-label="previous">

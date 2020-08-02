@@ -1,6 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 
+// AXIOS AJAX
+import axios from 'axios';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,6 +17,9 @@ import SearchIcon from '@material-ui/icons/Search';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  header: {
+    marginBottom: 20
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -73,60 +79,70 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Header() {
+export default function Header(props) {
   const classes = useStyles();
 
+  // Hook state for search TEXT
   const [searchText, setSearchText] = useState("");
 
-  // Searching
+  // Search function for submitting.
   const onSearch = () => {
     console.log("Begin Searching...");
     console.log("Searching for:", searchText);
+
+    console.log("Header Proptypes", props);
+
+    axios.get("https://api.jikan.moe/v3/search/anime?q="+searchText)
+      .then(function (response){
+        console.log("Response from API:", response);
+        props.animeList(response.data.results);
+      })
+      .catch(function (error){
+        console.log("An error has occured.", error);
+      })
+      .finally(function(){
+        console.log("Getting Anime search completed.");
+      });
   }
 
+  // On Input change set Search Text Variable
   const onInputText = (event) => {
     console.log("onCHANGE - Text Input.");
     setSearchText(event.target.value);
-
-    if(event.keyCode == 13){
-      onSearch()
-    }
   }
 
 
-  
+// Returning HEADER component
   return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            VeenaViera - Recommend Animes
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => onInputText(e)}
-              onKeyDown={(e) => e.keyCode == 13 && e.target.value.length > 2 ? onSearch() : null }
-            />
-            <Button variant="contained" className={classes.submit} onClick={(e) => {onSearch()}}>search</Button>
+    <AppBar className={classes.header} position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography className={classes.title} variant="h6" noWrap>
+          VeenaViera - Recommend Animes
+        </Typography>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
           </div>
-        </Toolbar>
-      </AppBar>
-    </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={(e) => onInputText(e)}
+            onKeyDown={(e) => e.keyCode == 13 && e.target.value.length > 2 ? onSearch() : null }
+          />
+          <Button variant="contained" className={classes.submit} onClick={(e) => {onSearch()}}>search</Button>
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 }
