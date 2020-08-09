@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // Custom Components
 import Header from "./Components/Header";
 import AnimeCard from "./Components/AnimeCard";
+import AnimeCollapseCard from "./Components/AnimeCollapseCard";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
