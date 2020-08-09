@@ -121,6 +121,8 @@ export default function Header(props) {
           VeenaViera - Recommend Animes
         </Typography>
         <div className={classes.search}>
+          <CircularProgress />
+          asdfasdfasdfasdf
           <InputBase
             placeholder="Search animes..."
             classes={{
