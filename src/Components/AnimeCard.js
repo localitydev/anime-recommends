@@ -7,10 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
 // MATERIAL ICONS
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AddToQueueOutlinedIcon from '@material-ui/icons/AddToQueueOutlined';
-
-import { TextareaAutosize } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +37,15 @@ const useStyles = makeStyles((theme) => ({
     width: 38,
   },
 }));
+
+const addToRecommends = (anime) => {
+  console.log("Add to recommendations.", anime);
+
+  // Check IF $mal_id is already recommended
+    // IF false
+      // Add Anime recommendation with name of person who recommended
+    // ELSE Add name to recommends this Anime
+}
 
 export default function AnimeCard(props) {
   const classes = useStyles();
@@ -71,12 +77,12 @@ export default function AnimeCard(props) {
           </Typography>
           <hr/>
           <Typography component="p">{props.anime.synopsis}</Typography>
-          <Typography component="p"><a href={props.anime.url} target="_blank">Learn more</a></Typography>
+          <Typography component="p"><a href={props.anime.url} target="_blank" rel="noopener noreferrer">Learn more</a></Typography>
           <hr />
         </CardContent>
         
         <div className={classes.controls}>
-          <IconButton aria-label="previous">
+          <IconButton aria-label="Add to recommendations" onClick={(e) => {addToRecommends(props.anime)}}>
             <AddToQueueOutlinedIcon />
           </IconButton>
         </div>

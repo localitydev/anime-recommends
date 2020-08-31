@@ -6,13 +6,19 @@ import axios from 'axios';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import { withStyles } from '@material-ui/core/styles';
+
+// = ICONS =
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import SearchIcon from '@material-ui/icons/Search';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     marginBottom: 20
+  },
+  headerProg: {
+    color:"white"
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -74,9 +83,20 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     backgroundColor: "#BADA55",
     float: "right",
+  },
+  show: {
+    display: "block"
+  },
+  hide: {
+    display: "none"
   }
 }));
 
+const StyledProgress = withStyles({
+  colorPrimary: {
+    color: "#BADA55"
+  }
+})(CircularProgress);
 
 
 export default function Header(props) {
@@ -84,10 +104,13 @@ export default function Header(props) {
 
   // Hook state for search TEXT
   const [searchText, setSearchText] = useState("");
+  const [searching, setSearching] = useState(false);
 
   // Search function for submitting.
   const onSearch = () => {
     console.log("Begin Searching...");
+    setSearching(true);
+
     console.log("Searching for:", searchText);
 
     console.log("Header Proptypes", props);
@@ -103,6 +126,7 @@ export default function Header(props) {
       })
       .finally(function(){
         console.log("Getting Anime search completed."); // If there is anything I need to do once the AJAX call is completed
+        setSearching(false);
       });
   }
 
@@ -120,9 +144,9 @@ export default function Header(props) {
         <Typography className={classes.title} variant="h6" noWrap>
           VeenaViera - Recommend Animes
         </Typography>
+
+        <StyledProgress className={ searching ? classes.show : classes.hide } />
         <div className={classes.search}>
-          <CircularProgress />
-          asdfasdfasdfasdf
           <InputBase
             placeholder="Search animes..."
             classes={{
@@ -131,7 +155,7 @@ export default function Header(props) {
             }}
             inputProps={{ 'aria-label': 'search' }}
             onChange={(e) => onInputText(e)}
-            onKeyDown={(e) => e.keyCode == 13 && e.target.value.length > 2 ? onSearch() : null }
+            onKeyDown={(e) => e.keyCode === 13 && e.target.value.length > 2 ? onSearch() : null }
           />
           <Button variant="contained" className={classes.submit} onClick={(e) => {onSearch()}}>GO</Button>
         </div>
