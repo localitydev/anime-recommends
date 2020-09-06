@@ -12,13 +12,11 @@ import Button from '@material-ui/core/Button';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 
-// = ICONS =
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-// import SearchIcon from '@material-ui/icons/Search';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// IMPORTING Airtable functionality
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_APIKEY }).base( process.env.REACT_APP_AIRTABLE_BASE );
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,7 +96,6 @@ const StyledProgress = withStyles({
   }
 })(CircularProgress);
 
-
 export default function Header(props) {
   const classes = useStyles();
 
@@ -107,19 +104,19 @@ export default function Header(props) {
   const [searching, setSearching] = useState(false);
 
   // Search function for submitting.
+  // When searching for an anime. Set isRecommended to false
   const onSearch = () => {
     console.log("Begin Searching...");
     setSearching(true);
+    props.setIsRecommended(false);
 
     console.log("Searching for:", searchText);
-
-    console.log("Header Proptypes", props);
 
     // Query GET Jikan API for anime search
     axios.get("https://api.jikan.moe/v3/search/anime?q="+searchText)
       .then(function (response){
         console.log("Response from API:", response);
-        props.animeList(response.data.results);       // [setAnime] to the Data Results from Jikan API
+        props.setAnimes(response.data.results);       // [setAnime] to the Data Results from Jikan API
       })
       .catch(function (error){
         console.log("An error has occured.", error);  // IF there is an ERROR, tell me about it.
@@ -132,8 +129,26 @@ export default function Header(props) {
 
   // On Input change set Search Text Variable
   const onInputText = (event) => {
-    console.log("onCHANGE - Text Input.");
+    console.log("onCHANGE - Text Input value:", event.target.value);
     setSearchText(event.target.value);
+  }
+
+  // View saved recommendations
+  // When viewing recommendations set isRecommended to true
+  const listRecommendations = function(){
+    // SET isRecommended to true
+    props.setIsRecommended(true);
+
+    // GET RECOMMENDATIONS FROM AIRTABLE
+    base(process.env.REACT_APP_AIRTABLE_TABLE).select({
+      view: "Grid view"
+    }).all(function( err, records ){
+      if(err){console.log("Error:", err); return;}
+      console.log("Recommendation's List:", records);
+      const animes = records.map(record => {return record.fields});
+      props.setAnimes(animes);
+
+    });
   }
 
 
@@ -144,6 +159,10 @@ export default function Header(props) {
         <Typography className={classes.title} variant="h6" noWrap>
           VeenaViera - Recommend Animes
         </Typography>
+
+        <Button color="inherit" onClick={(e) => {listRecommendations()}}>
+          View Recommendations
+        </Button>
 
         <StyledProgress className={ searching ? classes.show : classes.hide } />
         <div className={classes.search}>
