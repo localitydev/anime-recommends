@@ -62,14 +62,20 @@ export default function AnimeCard(props) {
   const addToRecommends = (anime) => {
     // console.log("Add to recommendations.", anime);
 
+    setLoading(true);   // Loading Anime
+
     // LIST Records
     var records = base( process.env.REACT_APP_AIRTABLE_TABLE ).select({
       filterByFormula: `{mal_id} = ${anime.mal_id}`
-    }).all( function(err, records){
+    })
+    .all( function(err, records){
       // console.log("Records:", records);
 
       // If nothing was found, Add the record.
       if(records.length === 0){
+
+        
+
         base( process.env.REACT_APP_AIRTABLE_TABLE ).create([
           {
             "fields": {
@@ -92,51 +98,18 @@ export default function AnimeCard(props) {
             // console.error("Error adding anime to list", err);
             return;
           }
-          records.forEach(function (record) {
-            // console.log("Record successfully added to the list:", record.getId());
-          });
+
+          setLoading(false);  // Done Loading
+          setSuccess(true);   // Record added was a success!
+
+          // Wait 5 seconds and clear success
+          timer.current = setTimeout(() => {
+            setSuccess(false);
+          }, 5000);
         });
       }
-    } );
-    console.log("Records:", records);
 
-    // Find this anime in AIRTABLE
-    // base('MAL Recommends').find( anime.mal_id, function(err, record){
-      
-    //   /**
-    //    * [IF an ERROR comes back from AIRTABLE add the anime to the list]
-    //    */
-    //   if (err) { 
-        
-    
-
-    //     return;
-    //   }
-
-    //   // If there is no error, that means a record is found. No further action is necessary
-      console.log('Retrieved:', record);
-    // });
-
-    // Change Button to loading
-    setLoading(true);
-    timer.current = setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
-      // console.log(success);
-      timer.current = setTimeout(() => {
-        setSuccess(false);
-      }, 2000);
-    }, 2000);
-    
-
-
-
-    // Check IF $mal_id is already recommended
-      // IF false
-        // Add Anime recommendation
-        // return "Recommended";
-      // ELSE Add name to recommends this Anime
-        // return "Recommended";
+    });
   }
 
   return (
