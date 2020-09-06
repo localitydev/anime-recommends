@@ -106,30 +106,30 @@ export default function Header(props) {
   // Search function for submitting.
   // When searching for an anime. Set isRecommended to false
   const onSearch = () => {
-    console.log("Begin Searching...");
+    // console.log("Begin Searching...");
     setSearching(true);
     props.setIsRecommended(false);
 
-    console.log("Searching for:", searchText);
+    // console.log("Searching for:", searchText);
 
     // Query GET Jikan API for anime search
     axios.get("https://api.jikan.moe/v3/search/anime?q="+searchText)
       .then(function (response){
-        console.log("Response from API:", response);
+        // console.log("Response from API:", response);
         props.setAnimes(response.data.results);       // [setAnime] to the Data Results from Jikan API
       })
       .catch(function (error){
-        console.log("An error has occured.", error);  // IF there is an ERROR, tell me about it.
+        // console.log("An error has occured.", error);  // IF there is an ERROR, tell me about it.
       })
       .finally(function(){
-        console.log("Getting Anime search completed."); // If there is anything I need to do once the AJAX call is completed
+        // console.log("Getting Anime search completed."); // If there is anything I need to do once the AJAX call is completed
         setSearching(false);
       });
   }
 
   // On Input change set Search Text Variable
   const onInputText = (event) => {
-    console.log("onCHANGE - Text Input value:", event.target.value);
+    // console.log("onCHANGE - Text Input value:", event.target.value);
     setSearchText(event.target.value);
   }
 
@@ -143,8 +143,8 @@ export default function Header(props) {
     base(process.env.REACT_APP_AIRTABLE_TABLE).select({
       view: "Grid view"
     }).all(function( err, records ){
-      if(err){console.log("Error:", err); return;}
-      console.log("Recommendation's List:", records);
+      // if(err){console.log("Error:", err); return;}
+      // console.log("Recommendation's List:", records);
       const animes = records.map(record => {return record.fields});
       props.setAnimes(animes);
 

@@ -60,13 +60,13 @@ export default function AnimeCard(props) {
   const timer = React.useRef();
 
   const addToRecommends = (anime) => {
-    console.log("Add to recommendations.", anime);
+    // console.log("Add to recommendations.", anime);
 
     // LIST Records
     var records = base( process.env.REACT_APP_AIRTABLE_TABLE ).select({
       filterByFormula: `{mal_id} = ${anime.mal_id}`
     }).all( function(err, records){
-      console.log("Records:", records);
+      // console.log("Records:", records);
 
       // If nothing was found, Add the record.
       if(records.length === 0){
@@ -89,16 +89,16 @@ export default function AnimeCard(props) {
           }
         ], function(err, records) {
           if (err) {
-            console.error("Error adding anime to list", err);
+            // console.error("Error adding anime to list", err);
             return;
           }
           records.forEach(function (record) {
-            console.log("Record successfully added to the list:", record.getId());
+            // console.log("Record successfully added to the list:", record.getId());
           });
         });
       }
     } );
-    // console.log("Records:", records);
+    console.log("Records:", records);
 
     // Find this anime in AIRTABLE
     // base('MAL Recommends').find( anime.mal_id, function(err, record){
@@ -114,7 +114,7 @@ export default function AnimeCard(props) {
     //   }
 
     //   // If there is no error, that means a record is found. No further action is necessary
-    //   console.log('Retrieved:', record);
+      console.log('Retrieved:', record);
     // });
 
     // Change Button to loading
@@ -122,7 +122,7 @@ export default function AnimeCard(props) {
     timer.current = setTimeout(() => {
       setLoading(false);
       setSuccess(true);
-      console.log(success);
+      // console.log(success);
       timer.current = setTimeout(() => {
         setSuccess(false);
       }, 2000);
