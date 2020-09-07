@@ -28,18 +28,18 @@ export default function App() {
     const classes = useStyles();
 
     const [animes, setAnimes] = useState([]);
-    const [isRecommended, setIsRecommended] = useState(false);
+    const [viewingRecommendations, setViewingRecommendations] = useState(false);
 
     return (
         <div>
-            <Header setAnimes={setAnimes} setIsRecommended={setIsRecommended}  />
+            <Header setAnimes={setAnimes} isViewingRecommendations={setViewingRecommendations}  />
 
             <div>
                 <Grid container spacing={3}>
                     {animes.map( (anime, key) =>{
                         return(
                             <Grid key={key} item xs={12} md={6}>
-                                <AnimeCard anime={anime} isRecommended={isRecommended} />
+                                <AnimeCard anime={anime} showRecommendButton={!viewingRecommendations} />
                             </Grid>
                         )
                     })}

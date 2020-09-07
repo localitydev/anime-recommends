@@ -108,7 +108,7 @@ export default function Header(props) {
   const onSearch = () => {
     // console.log("Begin Searching...");
     setSearching(true);
-    props.setIsRecommended(false);
+    props.isViewingRecommendations(false);
 
     // console.log("Searching for:", searchText);
 
@@ -137,7 +137,7 @@ export default function Header(props) {
   // When viewing recommendations set isRecommended to true
   const listRecommendations = function(){
     // SET isRecommended to true
-    props.setIsRecommended(true);
+    props.isViewingRecommendations(true);
 
     // GET RECOMMENDATIONS FROM AIRTABLE
     base(process.env.REACT_APP_AIRTABLE_TABLE).select({

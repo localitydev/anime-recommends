@@ -143,7 +143,7 @@ export default function AnimeCard(props) {
         </CardContent>
         
         <div className={classes.controls}>
-          {!props.isRecommended && 
+          {props.showRecommendButton && 
             <Button variant="contained" disabled={loading} color="primary" onClick={(e) => {addToRecommends(props.anime)}}>
               Recommend Anime
             </Button>
