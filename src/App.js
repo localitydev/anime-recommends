@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 // Material Design components
 import { 
-    Grid
+  Grid
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -19,32 +19,32 @@ import AnimeCard from "./Components/AnimeCard";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
-    card: {
-        marginTop: theme.spacing(2),
-    }
+  card: {
+    marginTop: theme.spacing(2),
+  }
 }));
 
 export default function App() {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [animes, setAnimes] = useState([]);
-    const [viewingRecommendations, setViewingRecommendations] = useState(false);
+  const [animes, setAnimes] = useState([]);
+  const [viewingRecommendations, setViewingRecommendations] = useState(false);
 
-    return (
-        <div>
-            <Header setAnimes={setAnimes} isViewingRecommendations={setViewingRecommendations}  />
+  return (
+    <div>
+      <Header setAnimes={setAnimes} isViewingRecommendations={setViewingRecommendations}  />
 
-            <div>
-                <Grid container spacing={3}>
-                    {animes.map( (anime, key) =>{
-                        return(
-                            <Grid key={key} item xs={12} md={6}>
-                                <AnimeCard anime={anime} showRecommendButton={!viewingRecommendations} />
-                            </Grid>
-                        )
-                    })}
-                </Grid>
-            </div>
-        </div>
-    );
+      <div>
+        <Grid container spacing={3}>
+          {animes.map( (anime, key) =>{
+            return(
+              <Grid key={key} item xs={12} md={6}>
+                <AnimeCard anime={anime} showRecommendButton={!viewingRecommendations} />
+              </Grid>
+            )
+          })}
+        </Grid>
+      </div>
+    </div>
+  );
 }
